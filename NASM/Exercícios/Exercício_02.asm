@@ -6,44 +6,35 @@ section .data
 
 
     pacin db ' ', 0xa
-    cont_pacin equ $ - pacin
-
-	msg1 db 'Digite o primeiro valor:', 0xa
+   	cont_pacin equ $ - pacin
+    msg1 db 'Digite o primeiro valor:', 0xa
 	cont equ $ -msg1
-
-	msg2 db 'Digite o segundo valor:', 0xa
+    msg2 db 'Digite o segundo valor:', 0xa
 	cont2 equ $ -msg2
-
     somada db 'O valor da soma: '
 	cont_somada equ $ - somada
-
     subt db 'O valor da Subtração: '
-    cont_subt equ $ - subt
-    
+    	cont_subt equ $ - subt
     mult db 'O valor da Multiplicação: '
-    cont_mult equ $ - mult
-    
+    	cont_mult equ $ - mult
     divi db 'O valor da Divisão: '
-    cont_divi equ $ - divi
-    
+    	cont_divi equ $ - divi
     restada db 'O valor do resto: '
-    cont_restada equ $ - restada
-    
+    	cont_restada equ $ - restada
     msg4 db 'Qual operação deseja fazer ?', 0xa
-    cont4 equ $ - msg4
-    
-    oper db ' "1" Soma. "2"  Subtração. "3" Multiplicação.  "4" Divisão. ', 0xa
-    cont_oper equ $ - oper
-    
-
+    	cont4 equ $ - msg4
+    oper db  '"1" Soma. "2"  Subtração. "3" Multiplicação.  "4" Divisão. ', 0xa
+	cont_oper equ $ - oper
+    valid db 'O número inserido é inválido.' , 0xa
+    	cont_valid equ $ - valid
     
 section .bss
 
 	valor1 resb 1
 	valor2 resb 1
 	total resb 1
-    resto resb 1
-    var resb 1
+	resto resb 1
+   	var resb 1
     
 section .text
 
@@ -119,7 +110,15 @@ _start:
 	cmp al,bl
 	je mumu ; multiplicação
 	int 0x80
-	
+
+validade:
+    
+	mov eax, 4
+	mov ebx, 1
+	mov ecx, valid
+	mov edx, cont_valid
+	int 0x80 
+	jmp _start
 
 	
 	; Área das operações
@@ -136,31 +135,31 @@ didi: ; divisão
 	mov [total], al
 	mov [resto], ah
 	int 0x80
-
+	
 	mov eax, 4
 	mov ebx, 1
 	mov ecx, divi
 	mov edx, cont_divi
 	int 0x80
-
+	
 	mov eax, 4
 	mov ebx, 1
 	mov ecx, total
 	mov edx, 1
 	int 0x80
-   
-    mov eax, 4
-    mov ebx, 1
-    mov ecx, pacin
-    mov edx, cont_pacin
-    int 0x80
-    
+	   
+	mov eax, 4
+	mov ebx, 1
+	mov ecx, pacin
+	mov edx, cont_pacin
+	int 0x80
+	    
 	mov eax, 4
 	mov ebx, 1
 	mov ecx, restada
 	mov edx, cont_restada
 	int 0x80
-	
+		
 	mov eax, 4
 	mov ebx, 1
 	mov ecx, resto
@@ -214,7 +213,7 @@ susu: ; subtração
 	mov ecx, total
 	mov edx, 1
 	int 0x80
-    jmp exit
+  	jmp exit
     
 soso: ; soma
 
@@ -239,7 +238,7 @@ soso: ; soma
 	mov ecx, total
 	mov edx, 1
 	int 0x80
-    jmp exit
+    	jmp exit
 
 ; Fim área das operações
 
